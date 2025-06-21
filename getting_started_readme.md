@@ -1,212 +1,223 @@
-# JAX TPU Training - Getting Started
+# JAX TPU Training
 
-Welcome to the JAX TPU training environment! This guide will help you set up Google Colab with TPU/CPU support and access to our shared workspace.
+JAX and TPU training materials for team onboarding using Google Colab with hybrid GitHub + Google Drive workflow.
 
-## Quick Start (2 Steps)
+## Quick Demo - Try This First!
 
-1. **Open Colab and clone this repo**
-2. **Run the setup script**
+### Option 1: Run the Complete Demo
+```python
+# In a new Colab notebook:
+!git clone https://github.com/areanddee/jax-tpu-training.git
+%cd jax-tpu-training
+%run setup_workspace_hybrid.py
+%run Scripts/RK4v_jax_v2.py
+```
 
-That's it! You'll have access to JAX, TPUs (when available), and our shared workspace.
+### Option 2: Open Existing Demo Notebook
+1. Clone this repository in Colab
+2. Open `Notebooks/Hybrid-Jax-Demo.ipynb`
+3. Run all cells
+
+### What You'll See
+✅ **Hybrid workspace setup** - GitHub + Google Drive integration  
+✅ **JAX vectorized solver** - Runge-Kutta for dy/dt = y  
+✅ **Beautiful exponential curves** - Multiple initial conditions solved simultaneously  
+✅ **Hardware flexibility** - Same code on CPU or TPU
+
+## Full Team Setup
+
+### For Team Members
+
+1. **Enable TPU** (when available):
+   - Runtime → Change runtime type → Hardware accelerator → TPU → Save
+   - *Note: TPUs may not always be available on free tier*
+
+2. **Run setup script**:
+   ```python
+   !git clone https://github.com/areanddee/jax-tpu-training.git
+   %cd jax-tpu-training  
+   %run setup_workspace_hybrid.py
+   ```
+
+3. **Start learning JAX!**
+
+## Environment Setup
+
+### TPU vs CPU
+
+**TPU (Recommended when available):**
+- 8 TPU v2 cores for fast training
+- Optimized for large matrix operations
+- May have usage limits on free Colab
+
+**CPU (Always available):**
+- Good for learning JAX fundamentals
+- Unlimited availability
+- Slower for large computations
+
+### What Gets Set Up
+
+**Hybrid Workspace Structure:**
+
+```
+📁 GitHub (Code & Notebooks)     📁 Google Drive (Data & Outputs)
+├── Configs/                     ├── Configs/
+├── Datasets/                    ├── Datasets/          
+├── Docs/                        ├── Docs/
+├── Notebooks/                   ├── Notebooks/
+├── Outputs/                     ├── Outputs/
+└── Scripts/                     └── Scripts/
+```
+
+**GitHub**: Version-controlled code, notebooks, configs
+**Google Drive**: Large datasets, model outputs, shared resources
 
 ## Detailed Setup Instructions
 
-### Step 1: Access Google Colab
+### First Time Setup
 
-1. Go to [colab.research.google.com](https://colab.research.google.com)
-2. Sign in with your Google account
-3. Create a new notebook
+1. **Get Repository Access**
+   - This is a public repo - no special access needed
+   - For private company data, request access to shared Google Drive folder
 
-### Step 2: Choose Your Runtime
+2. **Open Google Colab**
+   - Go to [colab.research.google.com](https://colab.research.google.com)
+   - Sign in with your Google account
 
-**For TPU access (recommended when available):**
-- Runtime → Change runtime type → Hardware accelerator → **TPU** → Save
-- Note: TPUs have usage limits and may not always be available
+3. **Create New Notebook**
+   - File → New Notebook
+   - Or open our starter notebook (link above)
 
-**For CPU fallback:**
-- Runtime → Change runtime type → Hardware accelerator → **None** → Save
-- Always available, good for learning JAX basics
-
-### Step 3: Clone Repository and Setup
-
-Copy and run this code in your first cell:
-
-```python
-# Clone the training repository
-!git clone https://github.com/areanddee/jax-tpu-training.git
-%cd jax-tpu-training
-
-# Run the hybrid workspace setup
-%run setup_workspace.py
-```
-
-### Step 4: Verify Setup
-
-You should see output like:
-```
-✅ Repository cloned successfully
-✅ Connected to workspace: /content/jax-tpu-training
-📂 Available folders: ['Configs', 'Datasets', 'Docs', 'Notebooks', 'Outputs', 'Scripts']
-🎯 JAX devices: 8 cores (TPU v2)  # or "1 cores (cpu)"
-🚀 Ready for JAX/TPU development!
-```
-
-## Understanding the Workspace
-
-### Repository Structure
-
-```
-jax-tpu-training/
-├── Configs/          # Training configurations
-├── Datasets/         # Small datasets and data loading scripts
-├── Docs/             # Documentation and guides
-├── Notebooks/        # Jupyter notebooks with examples
-├── Outputs/          # Training results and logs
-├── Scripts/          # Python training scripts
-└── setup_workspace.py # Workspace setup script
-```
-
-### Hybrid Workspace
-
-We use a **hybrid approach** combining:
-
-- **GitHub Repository**: Version-controlled code, notebooks, and configurations
-- **Google Drive**: Large datasets, model outputs, and shared resources (when access is provided)
-
-The folder structure is identical in both systems for consistency.
-
-## Common Tasks
-
-### Running Example Notebooks
-
-```python
-# Navigate to notebooks folder
-%cd Notebooks
-
-# List available examples
-!ls *.ipynb
-
-# Run a specific notebook
-%run example_jax_basics.ipynb
-```
-
-### Training a Model
-
-```python
-# Navigate to scripts folder
-%cd Scripts
-
-# Run a training script
-!python train_basic_model.py --config ../Configs/basic_training.yaml
-```
-
-### Checking Available Hardware
-
-```python
-import jax
-print(f"Available devices: {jax.devices()}")
-print(f"Device count: {len(jax.devices())}")
-print(f"Device type: {jax.devices()[0].device_kind}")
-```
-
-## Troubleshooting
-
-### TPU Not Available
-```
-Cannot connect to TPU backend
-```
-**Solution**: TPUs have usage limits. Try:
-1. Use CPU runtime instead (Runtime → Change runtime type → None)
-2. Try again later when TPU usage is lower
-3. Consider upgrading to Colab Pro for more reliable TPU access
-
-### Repository Clone Fails
-```
-fatal: destination path 'jax-tpu-training' already exists
-```
-**Solution**: Repository already cloned. Just run:
-```python
-%cd jax-tpu-training
-%run setup_workspace.py
-```
-
-### JAX Import Error
-```
-ModuleNotFoundError: No module named 'jax'
-```
-**Solution**: Install JAX (the setup script should handle this):
-```python
-!pip install jax[tpu] -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-```
-
-### Google Drive Access Issues
-**Note**: Google Drive integration is optional. The repository works completely standalone. Drive access is only needed for large shared datasets.
-
-## Best Practices
-
-### Saving Your Work
-
-1. **Notebooks**: Save frequently (Ctrl+S) - they auto-save to your Google Drive
-2. **Code changes**: Consider creating your own branch:
-   ```python
-   !git checkout -b your-name-experiments
-   !git add .
-   !git commit -m "My experimental changes"
+4. **Choose Runtime**
+   ```
+   Runtime → Change runtime type
+   
+   For TPU training:
+   - Hardware accelerator: TPU
+   - Runtime shape: Standard
+   
+   For CPU learning:
+   - Hardware accelerator: None
+   - Runtime shape: Standard
    ```
 
-### Session Management
+5. **Run Setup Script**
+   ```python
+   # Clone repository and setup environment
+   !git clone https://github.com/areanddee/jax-tpu-training.git
+   %cd jax-tpu-training
+   %run setup_workspace_hybrid.py
+   ```
 
-- **Colab sessions timeout after ~12 hours of inactivity**
-- **Runtime changes (CPU ↔ TPU) restart the session and lose variables**
-- **Files in `/content/` are temporary** - use Git or Google Drive for persistence
+### What the Setup Script Does
 
-### Resource Usage
+1. **Clones GitHub repository** with all training code
+2. **Mounts Google Drive** for shared data access (if available)
+3. **Installs JAX** with TPU support
+4. **Configures workspace** with proper folder structure
+5. **Verifies hardware** (TPU/CPU detection)
 
-- **TPU cores**: 8 cores available when TPU runtime is active
-- **CPU cores**: 2 cores on free tier
-- **RAM**: 12GB on free tier, 25GB on Colab Pro
-- **Disk**: 100GB temporary storage per session
+### Working with the Hybrid System
 
-## Getting Help
+**For Code Development:**
+- Edit notebooks and scripts in the GitHub folders
+- Commit changes: `!git add . && git commit -m "your message" && git push`
 
-### Learning Resources
+**For Data and Results:**
+- Large datasets go in Google Drive `/Datasets/`
+- Model outputs save to Google Drive `/Outputs/`
+- Share results via Google Drive folders
 
-- [JAX Documentation](https://jax.readthedocs.io/)
-- [JAX Tutorials](https://jax.readthedocs.io/en/latest/notebooks/quickstart.html)
-- [Colab TPU Tutorial](https://colab.research.google.com/notebooks/tpu.ipynb)
+**Best Practices:**
+- Keep code in GitHub (< 100MB files)
+- Keep data in Google Drive (large files)
+- Use same folder names for easy navigation
 
-### Team Support
+## Common Issues & Solutions
 
-- Check the `Docs/` folder for team-specific guides
-- Review example notebooks in `Notebooks/` folder
-- Ask questions in team communication channels
+### "Cannot connect to TPU backend"
+- **Solution**: Click "Connect without TPU" and use CPU for learning
+- **Alternative**: Try again during off-peak hours
+- **Upgrade**: Consider Colab Pro for reliable TPU access
 
-### Common JAX Patterns
+### "Google Drive mount failed"
+- **Solution**: Restart runtime and try again
+- **Alternative**: Work without Google Drive (uses local storage)
+- **Workaround**: Manual file upload/download as needed
 
-```python
-import jax
-import jax.numpy as jnp
-from jax import random, grad, jit, vmap
+### "Repository not found"
+- **Solution**: Make sure you have internet connection
+- **Check**: Repository is public and accessible
+- **Alternative**: Download ZIP and upload to Colab manually
 
-# Basic JAX operations
-key = random.PRNGKey(42)
-x = random.normal(key, (1000, 1000))
-y = jnp.dot(x, x.T)
-print(f"Computation ran on: {y.device()}")
+### Lost work after session timeout
+- **Prevention**: Save notebooks to Google Drive frequently (Ctrl+S)
+- **Recovery**: Re-run setup script to restore environment
+- **Best practice**: Commit code changes to GitHub regularly
 
-# JIT compilation for speed
-@jit
-def fast_function(x):
-    return jnp.dot(x, x.T)
+## Learning Path
 
-result = fast_function(x)
-```
+### Beginner: Start with the Demo
+1. **Run**: `Notebooks/Hybrid-Jax-Demo.ipynb` - See the system working
+2. **Explore**: `Scripts/RK4v_jax_v2.py` - JAX vectorized numerical methods
+3. **Learn**: JAX basics with working examples
 
-## Next Steps
+### Intermediate: JAX Fundamentals  
+1. Start with `Notebooks/01_jax_basics.ipynb` (when available)
+2. Learn array operations and transformations
+3. Practice with CPU (TPU not required)
 
-1. **Explore the notebooks**: Start with `Notebooks/01_jax_basics.ipynb`
-2. **Run example training**: Try `Scripts/train_simple_model.py`
-3. **Experiment**: Create your own notebooks and training scripts
-4. **Share progress**: Commit useful changes back to the repository
+### Advanced: TPU Optimization
+1. Run `Notebooks/02_tpu_introduction.ipynb` (when available)
+2. Learn TPU-specific patterns
+3. Experiment with batch sizes and precision
 
-Happy training! 🚀
+## Folder Guide
+
+### Configs/
+- Training configurations and experiment parameters
+- TPU-specific settings and hardware configs
+
+### Notebooks/
+- `Hybrid-Jax-Demo.ipynb` - **Start here!** Complete working demo
+- Learning tutorials and examples
+- Save your experimental notebooks here
+
+### Scripts/
+- `RK4v_jax_v2.py` - JAX vectorized Runge-Kutta solver demo
+- `setup_workspace_hybrid.py` - Main setup script
+- Production training scripts and utilities
+
+### Datasets/
+- Sample datasets for tutorials
+- Links to larger datasets in Google Drive
+- Data preprocessing scripts
+
+### Outputs/
+- Model checkpoints and weights
+- Training logs and metrics
+- Generated visualizations
+
+### Docs/
+- Additional documentation
+- Team resources and guides
+- Reference materials
+
+## Support
+
+- **Technical Issues**: Create an issue in this repository
+- **Access Problems**: Contact project maintainer
+- **JAX Questions**: Check [JAX documentation](https://jax.readthedocs.io/)
+- **Colab Help**: See [Colab FAQ](https://research.google.com/colaboratory/faq.html)
+
+## Contributing
+
+1. Work on your assigned notebooks/scripts
+2. Test on both CPU and TPU when possible
+3. Commit changes with descriptive messages
+4. Share results in Google Drive `/Outputs/` folder
+5. Document new techniques in `/Docs/`
+
+---
+
+**Happy JAX Training! 🚀**
