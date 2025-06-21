@@ -36,11 +36,35 @@ def setup_github_repo():
     
     print("📡 Setting up GitHub repository...")
     
+    # Check if we're already inside the repo
+    current_dir = os.path.basename(os.getcwd())
+    if current_dir == repo_name and os.path.exists('.git'):
+        print(f"✅ Already in repository {repo_name}")
+        print("📝 Skipping git operations (already in repo)")
+        return True
+    
+    # Check if repo exists as subdirectory
+    if os.path.exists(repo_name):
+        print(f"📁 Repository {repo_name} already exists")
+        os.chdir(repo_name)
+        print("📝 Skipping git operations (existing repo)")
+        return True
+    
+    # Repo doesn't exist, need to clone
+    print(f"📥 Cloning repository from {repo_url}")
+    if run_command(f"git clone {repo_url}", "git clone"):
+        print("✅ Repository cloned successfully")
+        os.chdir(repo_name)
+        return True
+    else:
+        print("❌ Failed to clone repository")
+        return False
+    
+    # If not in repo, proceed with original logic
     if os.path.exists(repo_name):
         print(f"📁 Repository {repo_name} already exists")
         os.chdir(repo_name)
         
-        # Try to pull latest changes
         if run_command("git pull origin main", "git pull"):
             print("✅ Repository updated to latest version")
         else:
